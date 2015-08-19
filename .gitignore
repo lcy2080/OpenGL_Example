@@ -1,0 +1,28 @@
+# Compiled Source #
+#################
+*.exe
+*.dll
+*.com
+*.class
+*.o
+*.so
+
+#unnecessary files#
+################
+Library
+Temp
+*.pidb
+*.sln
+*.userprefs
+*.csproj
+*.orig
+*.orig.meta
+*.DS_Store
+thums.db
+.mayaSwatches
+worspace.mel
+*.unityproj
+*.pidb
+Sound.meta
+workspace.mel.meta
+*.xcodeproj
