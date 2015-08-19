@@ -91,7 +91,8 @@ void CFlag::Render(const double &delta)
 
 void CFlag::PositionUpdate(const double &delta)
 {
-    
+
+    std::cout << "physics input : " << delta << std::endl;
     for (int row = 0; row<7; row++)
     {
         for (int col = 0; col<9; col++)
@@ -99,19 +100,19 @@ void CFlag::PositionUpdate(const double &delta)
             //accel init
             Vec3 Wind = g_Wind->GetWind(points[row][col].position);
             
-            double Rwind_x = rand()%10*400 + Wind.x;
-            double Rwind_z = rand()%10*400 + Wind.z;
+            double Rwind_x = rand()%10*4 + Wind.x;
+            double Rwind_z = rand()%10*4 + Wind.z;
             
             if (Wind.x==0.0) Rwind_x = 0.0;
             if (Wind.z==0.0) Rwind_z = 0.0;
             //std::cout << "wind_x : " << Rwind_x << std::endl;
             //std::cout << "wind_z : " << Rwind_z << std::endl;
             
-            points[row][col].accel = {Rwind_x,-1000.0,Rwind_z};
+            points[row][col].accel = {Rwind_x,-30.0,Rwind_z};
             
-            double k_factor1 = 10000.0;
-            double k_factor2 = 1000.0;
-            double k_factor3 = 500.0;
+            double k_factor1 = 300.0;
+            double k_factor2 = 30.0;
+            double k_factor3 = 15.0;
             double Dist1 = 1.0;
             double Dist2 = 2.0;
             double Dist3 = sqrt(2.0);

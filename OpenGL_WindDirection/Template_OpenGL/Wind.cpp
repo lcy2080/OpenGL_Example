@@ -56,9 +56,9 @@ void CWind::Render()
     //std::cout << "Wind Dir : " << WindDir.x << "," << WindDir.y << "," << WindDir.z << std::endl;
     //std::cout << "Wind Power : " << WindPower << std::endl;
     glColor3f(0, 1, 0);
-    for (int x = -10; x<=10; x++)
+    for (int x = -20; x<=20; x++)
     {
-        for (int y = -10; y<=10; y++)
+        for (int y = -20; y<=20; y++)
         {
             glBegin(GL_LINES);
             
@@ -85,10 +85,10 @@ Vec3 CWind::GetWind(const Vec3 &position)
 
 void CWind::WindInc()
 {
-    WindPower += 100.0;
+    WindPower += 10.0;
 }
 
 void CWind::WindDec()
 {
-    WindPower -= 100.0;
+    WindPower -= 10.0;
 }

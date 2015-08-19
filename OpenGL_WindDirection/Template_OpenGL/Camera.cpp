@@ -20,7 +20,7 @@ void CCamera::Render()
     glRotatef(RotX, 1.0f, 0.0f, 0.0f);
     glRotatef(RotY, 0.0f, 1.0f, 0.0f);
     glRotatef(RotZ, 0.0f, 0.0f, 1.0f);
-    glTranslatef(0.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 5.0f, 0.0f);
 }
 
 void CCamera::RotAngleXinc()

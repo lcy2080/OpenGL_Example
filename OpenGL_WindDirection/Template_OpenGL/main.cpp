@@ -37,6 +37,11 @@ clock_t update_time;
 
 clock_t physics_time;
 
+int prev_time_physics;
+int current_time_physics;
+int prev_time_draw;
+int current_time_draw;
+
 /*GLUT display callback function*/
 void display(void);
 
@@ -118,7 +123,15 @@ void KeyDown(unsigned char key, int x, int y)
 
 int main(int argc, char * argv[])
 {
+    //init
+    glutInit(&argc, argv);
+    
     //initiallize time
+    current_time_physics = glutGet(GLUT_ELAPSED_TIME);
+    current_time_draw = current_time_physics;
+    prev_time_physics = current_time_physics;
+    prev_time_draw = current_time_physics;
+    
     update_time = clock();
     physics_time = update_time;
     
@@ -126,8 +139,7 @@ int main(int argc, char * argv[])
     _CamPos.y = 0.0f;
     _CamPos.z = 25.0f;
     
-    //init
-    glutInit(&argc, argv);
+
     
     //set the window size 512*512
     glutInitWindowSize(512, 512);
@@ -180,6 +192,7 @@ void display()
 {
     clock_t now_time = clock();
     
+    
 //    std::cout << "now_time : " << now_time << std::endl;
 //    std::cout << "update_time : " << update_time << std::endl;
 //    std::cout << now_time - update_time << std::endl;
@@ -225,24 +238,33 @@ void display()
     //cout << "input delta : " << (double)(now_time - update_time) / (double)CLOCKS_PER_SEC << endl;
     //cout << "draw fps : " <<  (double)CLOCKS_PER_SEC / (double)(now_time - update_time)<< endl;
     
-    g_Flag->Render((double)(now_time - update_time) / (double)CLOCKS_PER_SEC);
-    update_time = now_time;
+    //current_time_physics = glutGet(GLUT_ELAPSED_TIME);
+    current_time_draw = glutGet(GLUT_ELAPSED_TIME);
     
-    if (now_time-physics_time >= 1800)
+    bool updated = false;
+    while ((current_time_draw - prev_time_draw) < 15 || !updated)
     {
-        cout << "physics delta : " << (double)(now_time - physics_time) / (double)CLOCKS_PER_SEC << endl;
-        cout << "physics fps : " <<  (double)CLOCKS_PER_SEC / (double)(now_time - physics_time)<< endl;
-        g_Flag->PositionUpdate((double)(now_time-physics_time)/(double)CLOCKS_PER_SEC);
-        physics_time = now_time;
+        current_time_physics = glutGet(GLUT_ELAPSED_TIME);
+        current_time_draw = current_time_physics;
+        
+        if (current_time_physics - prev_time_physics > 7)
+        {
+            std::cout << "physics fps : " << 1000.0f/(float) (current_time_physics-prev_time_physics)<< std::endl;
+            g_Flag->PositionUpdate((double)(current_time_physics-prev_time_physics) / 1000.0);
+            prev_time_physics = current_time_physics;
+            updated = true;
+        }
     }
+    std::cout << "draw fps : " << 1000.0f/(float) (current_time_draw-prev_time_draw)<< std::endl;
     g_Wind->Render();
+    g_Flag->Render((float) (current_time_draw-prev_time_draw) / 1000.0);
     
-    
+    prev_time_draw = current_time_draw;
     
     glFlush();
-    
     //swap the back and front buffers so we can see what we just drew
     glutSwapBuffers();
+    
 }
 
 void reshape(int width, int height)
